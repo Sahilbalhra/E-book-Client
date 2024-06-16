@@ -17,3 +17,9 @@ export type BooksApiResponse = {
   message: string;
   status: number;
 };
+
+export type SingleBookApiResponse = {
+  data: Book;
+  message: string;
+  status: number;
+};
