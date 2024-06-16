@@ -27,8 +27,6 @@ const SingleBookPage = async ({ params }: { params: { bookId: string } }) => {
     throw new Error("Book not found");
   }
 
-  console.log("book", book);
-
   return (
     <div className="mx-auto grid max-w-6xl grid-cols-3 gap-10 px-5 py-10">
       <div className="col-span-2 pr-16 text-primary-950">
