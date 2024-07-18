@@ -1,25 +1,66 @@
+// import React from "react";
+// import BookCard from "@/app/(home)/components/BookCard";
+// import { Book, BooksApiResponse } from "@/types";
+
+// const BookList = async () => {
+//   // data fetching
+//   const response = await fetch(`${process.env.BACKEND_URL}/books`, {
+//     cache: "no-store",
+//   });
+//   if (!response.ok) {
+//     throw new Error("An error occurred while fetching the books");
+//   }
+
+//   const books: BooksApiResponse = await response.json();
+
+//   return (
+//     <div className="grid grid-cols-1 gap-8 md:grid-cols-3 max-w-7xl mx-auto mb-10">
+//       {books.data.map((book: Book) => (
+//         <BookCard key={book._id} book={book} />
+//       ))}
+//     </div>
+//   );
+// };
+
+// export default BookList;
+
 import React from "react";
 import BookCard from "@/app/(home)/components/BookCard";
 import { Book, BooksApiResponse } from "@/types";
 
-const BookList = async () => {
-  // data fetching
+type Props = {
+  books?: BooksApiResponse;
+};
+
+const BookList = ({ books }: Props) => {
+  return (
+    <div className="grid grid-cols-1 gap-8 md:grid-cols-3 max-w-7xl mx-auto mb-10">
+      {books &&
+        books.data.map((book: Book) => <BookCard key={book._id} book={book} />)}
+    </div>
+  );
+};
+
+export const getServerSideProps = async () => {
   const response = await fetch(`${process.env.BACKEND_URL}/books`, {
     cache: "no-store",
   });
+
   if (!response.ok) {
-    throw new Error("An error occurred while fetching the books");
+    return {
+      notFound: true,
+    };
   }
 
   const books: BooksApiResponse = await response.json();
 
-  return (
-    <div className="grid grid-cols-1 gap-8 md:grid-cols-3 max-w-7xl mx-auto mb-10">
-      {books.data.map((book: Book) => (
-        <BookCard key={book._id} book={book} />
-      ))}
-    </div>
-  );
+  console.log("books", books);
+
+  return {
+    props: {
+      books,
+    },
+  };
 };
 
 export default BookList;

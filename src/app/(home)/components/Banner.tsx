@@ -22,6 +22,8 @@ const Banner = () => {
           className="absolute bottom-0 right-5"
           height={0}
           width={0}
+          placeholder="blur"
+          priority={false}
           sizes="100vw"
           style={{ width: "auto", height: "18rem" }}
         />
