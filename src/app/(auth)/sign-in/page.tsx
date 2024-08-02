@@ -2,47 +2,29 @@
 import React, { useRef } from "react";
 import Link from "next/link";
 import { signIn } from "next-auth/react";
-
-// const signInUser = async (data: any) => {
-//   const response = await fetch(`${process.env.BACKEND_URL}/users/login`, {
-//     headers: {
-//       Accept: "application/json",
-//       "Content-Type": "application/json",
-//     },
-//     method: "POST",
-//     body: data,
-//     // cache: "no-store",
-//   });
-
-//   if (!response.ok) {
-//     throw new Error("An error occurred while fetching the books");
-//   }
-
-//   const user: any = await response.json();
-//   return user;
-// };
+import { useRouter } from "next/navigation";
 
 const SignIn = () => {
   const emailRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
+  const router = useRouter();
 
   const onSubmit = async () => {
     const email = emailRef.current?.value;
     const password = passwordRef.current?.value;
-    console.log("{ email: email, password: password }", {
+
+    const signInResult = await signIn("credentials", {
+      redirect: false,
       email: email,
       password: password,
     });
-
-    // const user = await signInUser({ email: email, password: password });
-    // console.log("user", user);
-
-    const signInResult = await signIn("credentials", {
-      email,
-      password,
-      // callbackUrl: "/protected",
-    });
     console.log("signInResult: ", signInResult);
+    if (signInResult?.url) {
+      console.log("signInResult: ", signInResult);
+      router.replace("/");
+    }
+
+    // console.log("signInResult: ", signInResult);
   };
 
   return (
@@ -56,10 +38,7 @@ const SignIn = () => {
             <form
               className="space-y-4 md:space-y-6"
               action="#"
-              onSubmit={(e) => {
-                e.preventDefault();
-                onSubmit();
-              }}
+              onSubmit={onSubmit}
             >
               <div>
                 <label
