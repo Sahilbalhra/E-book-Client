@@ -12,19 +12,15 @@ const SignIn = () => {
   const onSubmit = async () => {
     const email = emailRef.current?.value;
     const password = passwordRef.current?.value;
-
     const signInResult = await signIn("credentials", {
       redirect: false,
       email: email,
       password: password,
     });
-    console.log("signInResult: ", signInResult);
+
     if (signInResult?.url) {
-      console.log("signInResult: ", signInResult);
       router.replace("/");
     }
-
-    // console.log("signInResult: ", signInResult);
   };
 
   return (
@@ -38,7 +34,10 @@ const SignIn = () => {
             <form
               className="space-y-4 md:space-y-6"
               action="#"
-              onSubmit={onSubmit}
+              onSubmit={(e) => {
+                e.preventDefault();
+                onSubmit();
+              }}
             >
               <div>
                 <label

@@ -1,10 +1,15 @@
+"use client";
 import React from "react";
 import Image from "next/image";
 import { Book, SingleBookApiResponse } from "@/types";
 import DownloadButton from "@/app/book/[bookId]/components/DownloadButton";
 import OverAllRating from "./components/OverAllRating";
+import { getSession, useSession } from "next-auth/react";
 
 const SingleBookPage = async ({ params }: { params: { bookId: string } }) => {
+  const data = await getSession();
+
+  console.log("data in books", data?.user);
   let book: Book | null = null;
   try {
     const response = await fetch(

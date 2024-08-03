@@ -11,33 +11,48 @@ export const authOptions: NextAuthOptions = {
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials): Promise<any> {
-        const response = await fetch(`${process.env.BACKEND_URL}/users/login`, {
-          method: "POST",
-          body: JSON.stringify({
-            email: credentials?.email,
-            password: credentials?.password,
-          }),
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
-
-        const apiResponse = await response.json();
-        // console.log("apiResponse", apiResponse);
-        if (apiResponse?.status === 200) {
-          return {
-            _id: apiResponse?.data?.user?._id,
-            name: apiResponse?.data?.user?.name,
-            email: apiResponse?.data?.user?.email,
-            role: apiResponse?.data?.user?.role,
-            tokens: {
-              accessToken: apiResponse?.data?.accessToken,
-              refreshToken: apiResponse?.data?.refreshToken,
-            },
-          };
+        if (credentials === null) {
+          return null;
         }
-        // return null;
-        throw new Error(apiResponse?.message);
+        try {
+          const response = await fetch(
+            `${process.env.BACKEND_URL}/users/login`,
+            {
+              method: "POST",
+              body: JSON.stringify({
+                email: credentials?.email,
+                password: credentials?.password,
+              }),
+              headers: {
+                "Content-Type": "application/json",
+              },
+            }
+          );
+
+          if (!response.ok) {
+            // throw new Error("Invalid credentials");
+            return null;
+          }
+
+          const apiResponse = await response.json();
+          if (apiResponse?.status === 200) {
+            return {
+              _id: apiResponse?.data?.user?._id,
+              name: apiResponse?.data?.user?.name,
+              email: apiResponse?.data?.user?.email,
+              role: apiResponse?.data?.user?.role,
+              tokens: {
+                accessToken: apiResponse?.data?.accessToken,
+                refreshToken: apiResponse?.data?.refreshToken,
+              },
+            };
+          } else {
+            throw new Error(apiResponse?.message);
+          }
+        } catch (error) {
+          // return null;
+          throw new Error(error as string);
+        }
       },
     }),
   ],
@@ -51,11 +66,9 @@ export const authOptions: NextAuthOptions = {
         token.accessToken = user.tokens.accessToken;
         token.refreshToken = user.tokens.refreshToken;
       }
-      // console.log("token in callbacks", token);
       return token;
     },
     async session({ session, token }) {
-      // console.log("token in session", token);
       if (token) {
         session.user._id = token._id;
         session.user.name = token.name;
@@ -64,7 +77,6 @@ export const authOptions: NextAuthOptions = {
         session.user.accessToken = token.accessToken;
         session.user.refreshToken = token.refreshToken;
       }
-      // console.log("session", session);
       return session;
     },
   },

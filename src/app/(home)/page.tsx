@@ -19,7 +19,6 @@ const fetchBooks = async () => {
 
 const Home = async () => {
   const books = await fetchBooks();
-
   return (
     <>
       <Banner />
