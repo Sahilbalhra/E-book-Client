@@ -11,7 +11,7 @@ const OverAllStarRating: React.FC<IOverAllStarRating> = ({
   rating,
 }) => {
   return (
-    <div className="p-8 bg-primary-50 rounded-3xl flex items-center justify-center flex-col">
+    <div className="p-8 bg-primary-50 rounded-lg flex items-center justify-center flex-col">
       <h2 className="font-manrope font-bold text-5xl text-primary-400 mb-6">
         {rating}
       </h2>

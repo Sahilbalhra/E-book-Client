@@ -1,5 +1,4 @@
-"use client";
-import React, { useState } from "react";
+import React from "react";
 import { Rating } from "@smastrom/react-rating";
 import "@smastrom/react-rating/style.css";
 const StarDrawing = (
@@ -16,12 +15,23 @@ const customStyles = {
   inactiveFillColor: "#e3b28e",
 };
 
-const StarRating = ({ maxWidth = 120, value = 0, readOnly = false }) => {
-  const [rating, setRating] = useState(value ?? 0);
+interface IStarRatingProps {
+  maxWidth?: number;
+  value?: number;
+  readOnly?: boolean;
+  onChange?: (rating: number) => void;
+}
+
+const StarRating: React.FC<IStarRatingProps> = ({
+  maxWidth = 120,
+  value = 0,
+  readOnly = false,
+  onChange,
+}) => {
   return (
     <Rating
-      value={rating}
-      onChange={setRating}
+      value={value}
+      onChange={onChange}
       style={{ maxWidth: maxWidth }}
       itemStyles={customStyles}
       readOnly={readOnly}

@@ -2,6 +2,7 @@ import React from "react";
 import UserRatingCard from "./UserRatingCard";
 import OverAllStarRating from "./OverAllStarRating";
 import SliderRating from "./SliderRating";
+import ReviewForm from "./ReviewForm";
 
 const OverAllRating = () => {
   return (
@@ -9,8 +10,11 @@ const OverAllRating = () => {
       <div className="w-full max-w-7xl px-4 md:px-5 lg-6 mx-auto">
         <div className="w-full">
           <h2 className="font-manrope font-bold text-4xl text-black mb-8 text-center">
-            Customer Reviews
+            Ratings & Reviews
           </h2>
+          <div>
+            <ReviewForm />
+          </div>
           <div className="grid grid-cols-1 xl:grid-cols-2 gap-11 pb-11 border-b border-gray-100 max-xl:max-w-2xl max-xl:mx-auto">
             <div className="box flex flex-col gap-y-4 w-full ">
               {[
@@ -53,7 +57,9 @@ const OverAllRating = () => {
                 />
               ))}
             </div>
-            <OverAllStarRating rating={4.3} totalReview={46} />
+            <div>
+              <OverAllStarRating rating={4.3} totalReview={46} />
+            </div>
           </div>
           <UserRatingCard
             date={new Date()}
