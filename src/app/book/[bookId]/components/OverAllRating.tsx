@@ -3,8 +3,11 @@ import UserRatingCard from "./UserRatingCard";
 import OverAllStarRating from "./OverAllStarRating";
 import SliderRating from "./SliderRating";
 import ReviewForm from "./ReviewForm";
+import { getServerSession } from "next-auth/next";
+import { authOptions } from "@/app/api/auth/[...nextauth]/options";
 
-const OverAllRating = () => {
+const OverAllRating = async () => {
+  const session = await getServerSession(authOptions);
   return (
     <section className="py-24 relative">
       <div className="w-full max-w-7xl px-4 md:px-5 lg-6 mx-auto">
@@ -12,9 +15,12 @@ const OverAllRating = () => {
           <h2 className="font-manrope font-bold text-4xl text-black mb-8 text-center">
             Ratings & Reviews
           </h2>
-          <div>
-            <ReviewForm />
-          </div>
+          {session?.user && (
+            <>
+              <ReviewForm />
+            </>
+          )}
+
           <div className="grid grid-cols-1 xl:grid-cols-2 gap-11 pb-11 border-b border-gray-100 max-xl:max-w-2xl max-xl:mx-auto">
             <div className="box flex flex-col gap-y-4 w-full ">
               {[

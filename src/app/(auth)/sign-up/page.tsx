@@ -2,6 +2,7 @@
 import React, { useRef } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { signUpAction } from "@/actions/sing-up/SignUp";
 
 const SignUp = () => {
   const emailRef = useRef<HTMLInputElement>(null);
@@ -13,6 +14,8 @@ const SignUp = () => {
     const email = emailRef.current?.value;
     const password = passwordRef.current?.value;
     const name = nameRef.current?.value;
+    const data = signUpAction({ email, password, name });
+    console.log(data);
   };
 
   return (
