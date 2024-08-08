@@ -2,8 +2,7 @@
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/app/api/auth/[...nextauth]/options";
 
-export async function signUpAction(formData: any) {
+export async function createReviewAction(formData: FormData) {
   const session = await getServerSession(authOptions);
-  console.log("session", session);
-  console.log("formData", formData);
+  // console.log("session", session);
 }
