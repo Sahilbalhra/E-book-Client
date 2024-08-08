@@ -1,6 +1,7 @@
 "use server";
 import axios from "axios";
 import SignUpApiResponse from "@/types/SignUpApiResponse.type";
+// import InitialFormState from "@/types/InitialFormState.type";
 
 export async function signUpAction(prevState: any, formData: FormData) {
   try {

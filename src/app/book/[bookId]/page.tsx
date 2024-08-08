@@ -1,6 +1,8 @@
 import React from "react";
 import Image from "next/image";
-import { Book, SingleBookApiResponse } from "@/types";
+import Book from "@/types/Book.type";
+import SingleBookApiResponse from "@/types/BookApiResponse.type";
+// import { Book, SingleBookApiResponse } from "@/types";
 import DownloadButton from "@/app/book/[bookId]/components/DownloadButton";
 import OverAllRating from "./components/OverAllRating";
 

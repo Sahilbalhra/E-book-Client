@@ -5,3 +5,6 @@ export * from "./BookApiResponse.type";
 export * from "./BooksApiResponse.type";
 export * from "./SignUpApiResponse.type";
 export * from "./AxiosApiResponse.type";
+export * from "./InitialFormState.type";
+export * from "./Review.type";
+export * from "./CreateReviewApiResponse.type";
