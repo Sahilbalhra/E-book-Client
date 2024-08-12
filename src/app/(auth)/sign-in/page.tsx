@@ -1,25 +1,32 @@
 "use client";
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import Link from "next/link";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import SubmitButton from "@/components/SubmitButton";
+import ToastHandle from "@/components/ToastHandler";
 
 const SignIn = () => {
   const emailRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
+  const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
   const onSubmit = async () => {
     const email = emailRef.current?.value;
     const password = passwordRef.current?.value;
+    setIsLoading(true);
     const signInResult = await signIn("credentials", {
       redirect: false,
       email: email,
       password: password,
     });
-
+    setIsLoading(false);
     if (signInResult?.url) {
+      ToastHandle("success", "Signed in successfully");
       router.replace("/");
+    } else {
+      ToastHandle("error", "Something Went Wrong!");
     }
   };
 
@@ -81,12 +88,7 @@ const SignIn = () => {
                   Forgot password?
                 </Link>
               </div>
-              <button
-                type="submit"
-                className="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
-              >
-                Sign in
-              </button>
+              <SubmitButton text="Sign In" isLoading={isLoading} />
               <p className="text-sm font-light text-gray-500 dark:text-gray-400 text-center">
                 Don’t have an account yet?{" "}
                 <Link

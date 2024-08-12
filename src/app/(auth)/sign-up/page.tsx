@@ -16,11 +16,13 @@ const SignUp = () => {
   const router = useRouter();
 
   useEffect(() => {
-    if (state.status) {
+    if (state.status && state.message) {
       ToastHandle("success", state.message);
       router.push("/sign-in");
     } else {
-      ToastHandle("error", state.message);
+      if (state.message) {
+        ToastHandle("error", state.message);
+      }
     }
   }, [state.data, state.message]);
 

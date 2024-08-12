@@ -10,6 +10,7 @@ import { getAllReviewsAction } from "@/actions/review/getAllReview.action";
 const ReviewForm = () => {
   const titleRef = useRef<HTMLInputElement>(null);
   const descRef = useRef<HTMLTextAreaElement>(null);
+  const [isLoading, setIsLoading] = useState(false);
   const [rating, setRating] = useState(0);
   const { bookId } = useParams();
 
@@ -26,7 +27,12 @@ const ReviewForm = () => {
       formData.append("rating", rating.toString());
       formData.append("bookId", bookId.toString());
 
+      setIsLoading(true);
+
       const response: any = await createReviewAction(formData);
+
+      setIsLoading(false);
+
       if (response?.status) {
         ToastHandle("success", response.message);
         titleRef.current.value = "";
@@ -93,7 +99,7 @@ const ReviewForm = () => {
           />
         </div>
         <div className="flex justify-end">
-          <SubmitButton text={"Add Review"} />
+          <SubmitButton text={"Add Review"} isLoading={isLoading} />
         </div>
       </form>
     </section>
