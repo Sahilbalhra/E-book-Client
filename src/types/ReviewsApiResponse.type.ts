@@ -1,12 +1,12 @@
 import AxiosApiResponse from "./AxiosApiResponse.type";
 import Review from "./Review.type";
 
-interface CreateReviewApiResponse extends AxiosApiResponse {
+interface ReviewsApiResponse extends AxiosApiResponse {
   data: {
-    data: Review;
+    data: Review[];
     message: string;
     status: number;
   };
 }
 
-export default CreateReviewApiResponse;
+export default ReviewsApiResponse;

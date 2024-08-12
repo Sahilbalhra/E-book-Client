@@ -1,7 +1,11 @@
 type Review = {
-  user_id: string;
+  user_id: {
+    _id: string;
+    name: string;
+    email: string;
+  };
   book_id: string;
-  title: "Testing...";
+  title: string;
   rating: string;
   comment: string;
   _id: string;

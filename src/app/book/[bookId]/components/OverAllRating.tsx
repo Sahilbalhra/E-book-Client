@@ -5,8 +5,9 @@ import SliderRating from "./SliderRating";
 import ReviewForm from "./ReviewForm";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/app/api/auth/[...nextauth]/options";
+import Review from "@/types/Review.type";
 
-const OverAllRating = async () => {
+const OverAllRating = async ({ reviews }: { reviews: Review[] }) => {
   const session = await getServerSession(authOptions);
   return (
     <section className="py-24 relative">
@@ -67,13 +68,18 @@ const OverAllRating = async () => {
               <OverAllStarRating rating={4.3} totalReview={46} />
             </div>
           </div>
-          <UserRatingCard
-            date={new Date()}
-            rating={4}
-            title="Title"
-            username="Sahil"
-            desc="Lorem ipsum dolor sit amet, consectetur adipisicing elit. Inventore minus ab architecto quas repellendus, modi accusantium. Sequi voluptas doloremque consectetur, nihil ab, blanditiis voluptatem assumenda provident doloribus itaque quis similique fuga. Illo."
-          />
+          {reviews.length > 0
+            ? reviews.map((review: Review) => (
+                <UserRatingCard
+                  key={review._id}
+                  date={review.createdAt}
+                  rating={Number(review.rating || "0")}
+                  title={review.title}
+                  username={review.user_id.name}
+                  desc={review.comment}
+                />
+              ))
+            : null}
         </div>
       </div>
     </section>

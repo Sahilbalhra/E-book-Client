@@ -5,9 +5,12 @@ import SingleBookApiResponse from "@/types/BookApiResponse.type";
 // import { Book, SingleBookApiResponse } from "@/types";
 import DownloadButton from "@/app/book/[bookId]/components/DownloadButton";
 import OverAllRating from "./components/OverAllRating";
+import Review from "@/types/Review.type";
+// import ReviewsApiResponse from "@/types/ReviewSApiResponse.type";
 
 const SingleBookPage = async ({ params }: { params: { bookId: string } }) => {
   let book: Book | null = null;
+  let reviews: Review[] | null = null;
   try {
     const response = await fetch(
       `${process.env.BACKEND_URL}/books/${params.bookId}`,
@@ -24,6 +27,24 @@ const SingleBookPage = async ({ params }: { params: { bookId: string } }) => {
     book = apiResponse.data;
   } catch (err: any) {
     throw new Error("Error fetching book");
+  }
+  try {
+    const response = await fetch(
+      `${process.env.BACKEND_URL}/review/${params.bookId}`,
+      {
+        next: {
+          revalidate: 3600,
+          tags: ["reviews"],
+        },
+      }
+    );
+    if (!response.ok) {
+      throw new Error("Error fetching book");
+    }
+    const apiResponse: any = await response.json();
+    reviews = apiResponse.data;
+  } catch (err: any) {
+    throw new Error("Error fetching Reviews");
   }
 
   if (!book) {
@@ -57,7 +78,7 @@ const SingleBookPage = async ({ params }: { params: { bookId: string } }) => {
       </div>
       <hr />
       <div className="mx-auto  max-w-6xl px-5 py-10">
-        <OverAllRating />
+        <OverAllRating reviews={Array.isArray(reviews) ? reviews : []} />
       </div>
     </>
   );
