@@ -1,11 +1,13 @@
 import React from "react";
 import Image from "next/image";
-import { Book, SingleBookApiResponse } from "@/types";
+import Book from "@/types/Book.type";
+import SingleBookApiResponse from "@/types/BookApiResponse.type";
 import DownloadButton from "@/app/book/[bookId]/components/DownloadButton";
 import OverAllRating from "./components/OverAllRating";
 
 const SingleBookPage = async ({ params }: { params: { bookId: string } }) => {
   let book: Book | null = null;
+
   try {
     const response = await fetch(
       `${process.env.BACKEND_URL}/books/${params.bookId}`,
@@ -55,7 +57,7 @@ const SingleBookPage = async ({ params }: { params: { bookId: string } }) => {
       </div>
       <hr />
       <div className="mx-auto  max-w-6xl px-5 py-10">
-        <OverAllRating />
+        <OverAllRating bookId={params.bookId} />
       </div>
     </>
   );

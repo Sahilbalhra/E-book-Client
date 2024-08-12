@@ -1,22 +1,55 @@
 "use client";
-import React, { useRef, useState } from "react";
+import React, { useState, useRef } from "react";
 import StarRating from "./StarRating";
+import SubmitButton from "@/components/SubmitButton";
+import ToastHandle from "@/components/ToastHandler";
+import { useParams } from "next/navigation";
+import { createReviewAction } from "@/actions/review/createReview.action";
+import { getAllReviewsAction } from "@/actions/review/getAllReview.action";
 
 const ReviewForm = () => {
   const titleRef = useRef<HTMLInputElement>(null);
   const descRef = useRef<HTMLTextAreaElement>(null);
+  const [isLoading, setIsLoading] = useState(false);
   const [rating, setRating] = useState(0);
-  const onSubmit = () => {};
+  const { bookId } = useParams();
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    const title = titleRef.current?.value;
+    const description = descRef.current?.value;
+
+    if (title && description && bookId && rating) {
+      let formData: any = new FormData();
+      formData.append("title", title);
+      formData.append("description", description);
+      formData.append("rating", rating.toString());
+      formData.append("bookId", bookId.toString());
+
+      setIsLoading(true);
+
+      const response: any = await createReviewAction(formData);
+
+      setIsLoading(false);
+
+      if (response?.status) {
+        ToastHandle("success", response.message);
+        titleRef.current.value = "";
+        descRef.current.value = "";
+        setRating(0);
+        await getAllReviewsAction(bookId.toString());
+      } else {
+        if (response?.message) {
+          ToastHandle("error", response.message);
+        }
+      }
+    }
+  };
+
   return (
     <section className="my-8 border p-10 rounded-lg">
-      <form
-        className="space-y-4 md:space-y-6"
-        action="#"
-        onSubmit={(e) => {
-          e.preventDefault();
-          onSubmit();
-        }}
-      >
+      <form className="space-y-4 md:space-y-6" onSubmit={handleSubmit}>
         <div>
           <label
             htmlFor="title"
@@ -66,12 +99,7 @@ const ReviewForm = () => {
           />
         </div>
         <div className="flex justify-end">
-          <button
-            type="submit"
-            className=" text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
-          >
-            Add Review
-          </button>
+          <SubmitButton text={"Add Review"} isLoading={isLoading} />
         </div>
       </form>
     </section>
