@@ -2,7 +2,7 @@ import { Suspense } from "react";
 import Loading from "@/components/Loading";
 import Banner from "@/app/(home)/components/Banner";
 import BookList from "@/app/(home)/components/BookList";
-import { BooksApiResponse } from "@/types";
+import BooksApiResponse from "@/types/BookApiResponse.type";
 
 const fetchBooks = async () => {
   const response = await fetch(`${process.env.BACKEND_URL}/books`, {
