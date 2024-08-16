@@ -13,7 +13,7 @@ const fetchBooks = async () => {
     throw new Error("An error occurred while fetching the books");
   }
 
-  const books: BooksApiResponse = await response.json();
+  const books = await response.json();
   return books;
 };
 
