@@ -1,6 +1,7 @@
 import React from "react";
 import BookCard from "@/app/(home)/components/BookCard";
-import { Book, BooksApiResponse } from "@/types";
+import Book from "@/types/Book.type";
+import BooksApiResponse from "@/types/BooksApiResponse.type";
 
 type Props = {
   books: BooksApiResponse;
